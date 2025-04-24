@@ -16,7 +16,7 @@ namespace PracticalWorkI
 
         public override string ToString()
         {
-            raturn base.ToString() + $", Max Load: {maxLoad}kg";
+            return base.ToString() + $", Max Load: {maxLoad}kg";
         }
     }
 }

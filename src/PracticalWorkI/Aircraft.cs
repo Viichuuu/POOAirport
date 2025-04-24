@@ -24,9 +24,9 @@ namespace PracticalWorkI
         public AircraftStatus GetStatus() => status;
         public int GetDistance() => distance;
         public int GetSpeed() => speed;
-        public double GetFuelCapacity() => FuelCapacity;
-        public double GetFuelConsume() => FuelConsume;
-        public double GetActualFuel() => ActualFuel;
+        public double GetFuelCapacity() => fuelCapacity;
+        public double GetFuelConsume() => fuelConsume;
+        public double GetActualFuel() => actualFuel;
         public void SetStatus(AircraftStatus status) { this.status = status; }
         public void SetDistance(int distance) { this.distance = distance; }
         public void SetActualFuel(double actualFuel) { this.actualFuel = actualFuel; }
