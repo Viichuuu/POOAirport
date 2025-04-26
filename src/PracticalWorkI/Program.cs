@@ -2,7 +2,7 @@
 
 namespace PracticalWorkI
 {
-    class Program
+    class Program : Airport
     {
         static void Main()
         {
@@ -19,7 +19,22 @@ namespace PracticalWorkI
                 Console.WriteLine("|4. Exit                                          |");
                 Console.WriteLine("|_________________________________________________|");
 
-                string option = Console.ReadLine();
+                string option = IntConsole.ReadLine();
+
+                switch(option)
+                {
+                    case "1":
+                        Airport.LoadAircraftFromFile();
+                        break;
+
+                    case "2":
+                        Airport.AddAircraft();
+                        break;
+                    case "3":
+                        Airport.AdvanceTick();
+                    case "4":
+                        exit = true;
+                }
             }
         }
     }
