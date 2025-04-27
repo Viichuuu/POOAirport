@@ -1,19 +1,18 @@
-using PracticalWorkI;
 using System;
 using System.IO;
 
 
-namespace PracticalWork1
+namespace PracticalWorkI
 {
-    public abstract class Airport
+    public class Airport
     {
-        private Runway[][] Runways {get; set;}
+        private Runway[,] Runways {get; set;}
 
         private List<Aircraft> Aircrafts {get; set;}
 
-        public Airport(int runwayRows, int runwayColumns, int aircraftNumber)
+        public Airport(int runwayRows, int runwayColumns)
         {
-            Runways = new Runways[runwayRows, runwayColumns];
+            Runways = new Runway[runwayRows, runwayColumns];
             Aircrafts = new List<Aircraft>();
 
             int id = 1;
@@ -29,23 +28,24 @@ namespace PracticalWork1
 
     public void ShowStatus()
     {
-        Console.WriteLine("Runway Status:");
+        Console.WriteLine("Runway Status: ");
         for(int r = 0; r < Runways.GetLength(0); r++)
         {
             for(int c = 0; c < Runways.GetLength(1); c++)
             {
-                    if(Runways[r][c].GetStatus(RunwayStatus.Free))
+                Runway runway = Runways[r,c];
+                    if (runway.GetStatus() == RunwayStatus.Free)
                     {
-                        Console.WriteLine($"{Runways[r,c].GetID} is free\n");
+                        Console.WriteLine($"{Runways[r,c].GetID()} is free\n");
                     } else {
-                        Console.WriteLine($"{Runways[r,c].GetID} is occupied by {Runways[r,c].GetCurrentAircraft()}\n");
+                        Console.WriteLine($"{Runways[r,c].GetID()} is occupied by {Runways[r,c].GetCurrentAircraft()}\n");
                     }
             }
         } 
         Console.WriteLine("Airctaft Status:");
-        foreach (var Airctaft in Aircrafts)
+        foreach (var aircraft in Aircrafts)
         {
-            Console.WriteLine($"{Aircraft.ToString()}");
+            Console.WriteLine($"{aircraft.ToString()}");
         }
     }
 
@@ -170,7 +170,7 @@ namespace PracticalWork1
         double fuelConsume = double.Parse(Console.ReadLine());
 
         double actualFuel = fuelCapacity;
-        AircraftStatus status = (distance > 0) ? AircraftStatus.InFlight : AircraftStatus.Waiting;
+        AircraftStatus status = (distance > 0) ? AircraftStatus.Flight : AircraftStatus.Waiting;
 
         switch (choice)
         {
