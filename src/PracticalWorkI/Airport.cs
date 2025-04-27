@@ -11,7 +11,7 @@ namespace PracticalWork1
 
         private List<Aircraft> Aircrafts {get; set;}
 
-        public Airport(int runwayRows, int runwayColumns, int aircraftNumber)
+        public Airport(int runwayRows, int runwayColumns)
         {
             Runways = new Runways[runwayRows, runwayColumns];
             Aircrafts = new List<Aircraft>();
@@ -24,7 +24,6 @@ namespace PracticalWork1
                     Runways[r,c] = new Runway($"Runway{id++}");
                 }
             }
-
         }
 
     public void ShowStatus()
@@ -34,12 +33,7 @@ namespace PracticalWork1
         {
             for(int c = 0; c < Runways.GetLength(1); c++)
             {
-                    if(Runways[r][c].GetStatus(RunwayStatus.Free))
-                    {
-                        Console.WriteLine($"{Runways[r,c].GetID} is free\n");
-                    } else {
-                        Console.WriteLine($"{Runways[r,c].GetID} is occupied by {Runways[r,c].GetCurrentAircraft()}\n");
-                    }
+                Runways[r][c].ToString()
             }
         } 
         Console.WriteLine("Airctaft Status:");
@@ -48,7 +42,6 @@ namespace PracticalWork1
             Console.WriteLine($"{Aircraft.ToString()}");
         }
     }
-
 
     public void AdvanceTick()
     {
