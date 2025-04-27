@@ -59,7 +59,6 @@ namespace PracticalWorkI
     {
         if (aircraft.GetStatus() == AircraftStatus.InFlight)
         {
-            // Calcular el avance en 15 minutos (1/4 de hora)
             int distanceToAdvance = aircraft.GetSpeed() / 4;
             int currentDistance = aircraft.GetDistance();
             int newDistance = Math.Max(0, currentDistance - distanceToAdvance);
@@ -70,26 +69,13 @@ namespace PracticalWorkI
             aircraft.SetDistance(newDistance);
             aircraft.SetActualFuel(newFuel);
 
-            // Si el avión ha llegado, cambia a estado Waiting
             if (newDistance == 0)
             {
                 aircraft.SetStatus(AircraftStatus.Waiting);
             }
         }
-        else if (aircraft.GetStatus() == AircraftStatus.Waiting)
-        {
-            // Aquí podrías poner lógica para asignar una pista si hay alguna libre
-            // Por ahora no hace falta hacer nada especial en este bloque
-        }
-        else if (aircraft.GetStatus() == AircraftStatus.Landing)
-        {
-            // Si tienes lógica especial para aviones aterrizando, ponla aquí
-            // Por ejemplo, podrías controlar el tiempo restante de aterrizaje
-        }
-        // No necesitas código especial para OnGround aquí
     }
 
-    // Actualizar el estado de las pistas
     for (int r = 0; r < Runways.GetLength(0); r++)
     {
         for (int c = 0; c < Runways.GetLength(1); c++)
@@ -99,11 +85,9 @@ namespace PracticalWorkI
             {
                 runway.DecreaseTicksAvailability();
             }
-            // Aquí podrías añadir lógica para asignar aviones en espera a pistas libres
         }
     }
 
-    // Mostrar el estado actualizado
     ShowStatus();
 }
 
