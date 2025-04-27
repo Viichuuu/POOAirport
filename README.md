@@ -30,7 +30,7 @@ Javier López Ranero
 
   This simulation works with ticks, each tick is 15min. Each ariplane moves closer to the airport every tick and use fuel depending on variables as speed or fuel consumption
 
-  The planes land on the airport when a runway is free, when landing the runway is occupied and no other airplane can use it. When the plane lands the runway becomes free again
+  The planes land at the airport when a runway is free, when landing the runway is occupied and no other airplane can use it. When the plane lands the runway becomes free again
 
   You can add flights by hand or by a csv file. All actions are available on the menu
 
@@ -41,7 +41,7 @@ Javier López Ranero
   This simulator is organized in different classes
 
   -Aircraft (Abstract):
-  This is the base class for all the airplanes. IT has the common atributes: ID, Status, distance to airport, speed, fuel capacity, fuel consumption and current fuel.
+  This is the base class for all the airplanes. It has the common atributes: ID, Status, distance to airport, speed, fuel capacity, fuel consumption and current fuel.
   There are 3 types of aircraft:
 
   Cargo plane: Has a maximum load in kg
@@ -71,7 +71,7 @@ Javier López Ranero
  During the development of this project we faced a lot of problems
 
  - Our group was made 10 days before the deadline and we didnt know each other
- - One of the mates didnt do anything beacause of family problems
+ - One of the mates didnt do anything because of family problems
  - There was lack of communication
  - Using github by some mates was difficult at first
  - No one did their assignments on time. They said they would have some class done by some exact time and they didnt have them
@@ -82,7 +82,7 @@ Javier López Ranero
 
  ## 4. Conclusions
 
-With this project we learned how to use what we leraned in object-oriented programming to build a simulation with classes and using inheritance.
+With this project we learned how to use what we learned in object-oriented programming to build a simulation with classes and using inheritance.
 
 We worked in GitHub, it helped us understand teamwork and how to organize code.
 
