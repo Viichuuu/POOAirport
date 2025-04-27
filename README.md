@@ -62,8 +62,9 @@ Javier López Ranero
 
   RunwayStatus: Possible states of the aircraft (Free, occupied)
 
- ### Class Diagram
+### Class Diagram
 
+![Class Diagram](./Diagram.jpg)
 
  ## 3. Problems encountered
 
