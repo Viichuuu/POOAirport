@@ -52,60 +52,61 @@ namespace PracticalWorkI
     }
 
     
-    public void AdvanceTick(int currentTick)
-    {        
-        
-        int tempTick = currentTick;
-        while(currentTick  == tempTick)
+    public void AdvanceTick()
+{
+    // Avanza 1 tick (15 minutos)
+    foreach (var aircraft in Aircrafts)
+    {
+        if (aircraft.GetStatus() == AircraftStatus.InFlight)
         {
-            currentTick++;
-            int simulationTime = currentTick * 15;
+            // Calcular el avance en 15 minutos (1/4 de hora)
+            int distanceToAdvance = aircraft.GetSpeed() / 4;
+            int currentDistance = aircraft.GetDistance();
+            int newDistance = Math.Max(0, currentDistance - distanceToAdvance);
 
-            foreach(var Aircraft in Aircrafts)
+            double fuelUsed = distanceToAdvance * aircraft.GetFuelConsume();
+            double newFuel = Math.Max(0, aircraft.GetActualFuel() - fuelUsed);
+
+            aircraft.SetDistance(newDistance);
+            aircraft.SetActualFuel(newFuel);
+
+            // Si el avión ha llegado, cambia a estado Waiting
+            if (newDistance == 0)
             {
-                
-                if(Aircraft.GetStatus() == AircraftStatus.InFlight)
-                {
-                    int tickInHours = simulationTime / 60;
-                    int tickDistance = Aircraft.GetSpeed() * tickInHours;
-                    int currentDistance = Aircraft.GetDistance();
-                    int finalDistance = currentDistance - tickDistance;
-                    Aircraft.SetDistance(finalDistance);
-                    Aircraft.SetActualFuel(Aircraft.GetFuelCapacity() - Aircraft.GetFuelConsume() * Aircraft.GetSpeed() / tickInHours);
-
-                    if(Aircraft.GetDistance() == 0)
-                    {
-                        Aircraft.SetStatus(AircraftStatus.Waiting);
-                    }
-
-                    } else if(Aircraft.GetStatus() == AircraftStatus.Waiting || Aircraft.GetStatus() == AircraftStatus.Landing){
-                    int tickInHours = simulationTime / 60;
-                    Aircraft.SetActualFuel(Aircraft.GetFuelCapacity() - Aircraft.GetFuelConsume() * Aircraft.GetSpeed() / tickInHours);
-                    } else if(Aircraft.GetStatus() == AircraftStatus.OnGround){
-                    }
-                    
-            } 
-        
-            foreach(var Runway in Runways)
-            {
-                if(Runway.GetStatus() == RunwayStatus.Free)
-                {
-                    foreach(var Aircraft in Aircrafts)
-                    {
-                        if(Aircraft.GetStatus() == AircraftStatus.Waiting)
-                        {
-                            Runway.ReserveRunmway(Aircraft);
-                            Aircraft.SetStatus(AircraftStatus.Landing);
-                            break;
-                        }
-                    }
-                } else if(Runway.GetStatus() == RunwayStatus.Ocupated) {
-                    Runway.DecreaseTicksAvailability();
-                }
+                aircraft.SetStatus(AircraftStatus.Waiting);
             }
         }
-
+        else if (aircraft.GetStatus() == AircraftStatus.Waiting)
+        {
+            // Aquí podrías poner lógica para asignar una pista si hay alguna libre
+            // Por ahora no hace falta hacer nada especial en este bloque
+        }
+        else if (aircraft.GetStatus() == AircraftStatus.Landing)
+        {
+            // Si tienes lógica especial para aviones aterrizando, ponla aquí
+            // Por ejemplo, podrías controlar el tiempo restante de aterrizaje
+        }
+        // No necesitas código especial para OnGround aquí
     }
+
+    // Actualizar el estado de las pistas
+    for (int r = 0; r < Runways.GetLength(0); r++)
+    {
+        for (int c = 0; c < Runways.GetLength(1); c++)
+        {
+            var runway = Runways[r, c];
+            if (runway.GetStatus() == RunwayStatus.Ocupated)
+            {
+                runway.DecreaseTicksAvailability();
+            }
+            // Aquí podrías añadir lógica para asignar aviones en espera a pistas libres
+        }
+    }
+
+    // Mostrar el estado actualizado
+    ShowStatus();
+}
+
     
 
     public void LoadAircraftFromFile()
@@ -236,7 +237,7 @@ namespace PracticalWorkI
             for(int i = 0; i < 150; i++)
             {
                 this.ShowStatus();
-                this.AdvanceTick(i);
+                this.AdvanceTick();
                 Thread.Sleep(3000);
             }
     }

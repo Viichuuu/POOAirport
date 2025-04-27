@@ -20,20 +20,20 @@ namespace PracticalWorkI
             this.actualFuel = actualFuel;
         }
     
-        public string GetID() => id;
-        public AircraftStatus GetStatus() => status;
-        public int GetDistance() => distance;
-        public int GetSpeed() => speed;
-        public double GetFuelCapacity() => fuelCapacity;
-        public double GetFuelConsume() => fuelConsume;
-        public double GetActualFuel() => actualFuel;
+        public string GetID(){return this.id;}
+        public AircraftStatus GetStatus(){ return this.status; }
+        public int GetDistance(){ return this.distance; }
+        public int GetSpeed() {return this.speed; }
+        public double GetFuelCapacity() {return fuelCapacity; }
+        public double GetFuelConsume() {return fuelConsume; }
+        public double GetActualFuel() {return actualFuel; }
         public void SetStatus(AircraftStatus status) { this.status = status; }
         public void SetDistance(int distance) { this.distance = distance; }
         public void SetActualFuel(double actualFuel) { this.actualFuel = actualFuel; }
 
         public override string ToString()
         {
-            return $"ID: {id}, Status: {status}, Distance: {distance}km, Speed: {speed}km/h, Fuel: {actualFuel}/{fuelCapacity}L";
+            return $"ID: {this.id}, Status: {this.status}, Distance: {this.distance}km, Speed: {this.speed}km/h, Fuel: {this.actualFuel}/{this.fuelCapacity}L";
         }
     }
 }
