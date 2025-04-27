@@ -35,3 +35,29 @@ Javier López Ranero
   You can add flights by hand or by a csv file. All actions are available on the menu
 
   The different types of airplanes are: Cargo, Passenger and Private. Each one has their unique characteristic in addition to those of the airplanes in general
+
+  ### Design and Architecture
+
+  This simulator is organized in different classes
+
+  -Aircraft (Abstract):
+  This is the base class for all the airplanes. IT has the common atributes: ID, Status, distance to airport, speed, fuel capacity, fuel consumption and current fuel.
+  There are 3 types of aircraft:
+
+  Cargo plane: Has a maximum load in kg
+  
+  Passengers plane: Has a number of passengers
+  
+  Private plane: Has a owner name
+
+  -Runway:
+  It is a single runway of the airport, it has an ID, its current status (free or occupied), the aircraft currently landing, and the ticks until its free.
+
+  -Airport:
+  This class is the one that manages the entire simulation. It has the aircrafts and runways and has the methods to show the status, advance the simulation with a tick, load flights and add flights.
+
+  -Enums:
+
+  AircraftStatus: Possible states of the Aircraft (Flight, landing, ground and waiting)
+
+  RunwayStatus: Possible states of the aircraft (Free, occupied)
