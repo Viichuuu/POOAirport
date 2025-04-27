@@ -75,7 +75,7 @@ Javier López Ranero
 
 ### Class Diagram
 
-![Class Diagram](./Diagram.jpg)
+![Class Diagram](../files/Diagram.jpg)
 
  ## 3. Problems encountered
 
