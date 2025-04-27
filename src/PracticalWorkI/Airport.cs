@@ -29,7 +29,7 @@ namespace PracticalWorkI
 
     public void ShowStatus()
     {
-        Console.WriteLine("Runway Status: \n");
+        Console.WriteLine("\n Runway Status: \n");
         for(int r = 0; r < Runways.GetLength(0); r++)
         {
             for(int c = 0; c < Runways.GetLength(1); c++)
@@ -44,7 +44,7 @@ namespace PracticalWorkI
             }
         } 
 
-        Console.WriteLine("Airctaft Status: \n");
+        Console.WriteLine("\nAirctaft Status:\n");
         foreach (var aircraft in Aircrafts)
         {
             Console.WriteLine($"{aircraft.ToString()}");
@@ -53,43 +53,53 @@ namespace PracticalWorkI
 
     
     public void AdvanceTick()
-{
-    // Avanza 1 tick (15 minutos)
-    foreach (var aircraft in Aircrafts)
     {
-        if (aircraft.GetStatus() == AircraftStatus.InFlight)
+        // We go though the AIrcraft list using a foreach
+        foreach (var aircraft in Aircrafts)
         {
-            int distanceToAdvance = aircraft.GetSpeed() / 4;
-            int currentDistance = aircraft.GetDistance();
-            int newDistance = Math.Max(0, currentDistance - distanceToAdvance);
-
-            double fuelUsed = distanceToAdvance * aircraft.GetFuelConsume();
-            double newFuel = Math.Max(0, aircraft.GetActualFuel() - fuelUsed);
-
-            aircraft.SetDistance(newDistance);
-            aircraft.SetActualFuel(newFuel);
-
-            if (newDistance == 0)
+            if (aircraft.GetStatus() == AircraftStatus.InFlight)
             {
-                aircraft.SetStatus(AircraftStatus.Waiting);
+                int distanceToAdvance = aircraft.GetSpeed() / 4;
+                int currentDistance = aircraft.GetDistance();
+                int newDistance = Math.Max(0, currentDistance - distanceToAdvance);
+                // We calculate the distance the aircraft advances in each tick and then the new distance it will have from the airport with the Math.MAx function
+                
+                double fuelUsed = distanceToAdvance * aircraft.GetFuelConsume();
+                double newFuel = Math.Max(0, aircraft.GetActualFuel() - fuelUsed);
+                // We do the same for the fuel used, but we use the distance to advance funtion to avoid repeating ourselves
+
+                aircraft.SetDistance(newDistance);
+                aircraft.SetActualFuel(newFuel);
+
+                if (newDistance == 0)
+                {
+                    aircraft.SetStatus(AircraftStatus.Waiting);
+                }
             }
         }
-    }
 
-    for (int r = 0; r < Runways.GetLength(0); r++)
-    {
-        for (int c = 0; c < Runways.GetLength(1); c++)
-        {
-            var runway = Runways[r, c];
-            if (runway.GetStatus() == RunwayStatus.Ocupated)
+        foreach(var Runway in Runways)
             {
-                runway.DecreaseTicksAvailability();
+                // Now we go through the Runways using a foreach loop as it is easier than the two for loops
+                if(Runway.GetStatus() == RunwayStatus.Free)
+                {
+                    foreach(var Aircraft in Aircrafts)
+                    {
+                        if(Aircraft.GetStatus() == AircraftStatus.Waiting)
+                        {
+                            Runway.ReserveRunmway(Aircraft);
+                            Aircraft.SetStatus(AircraftStatus.Landing);
+                            Runway.DecreaseTicksAvailability();
+                            // If the Runway status is free, then we go through each aircraft as before, searching for one that is waiting, reserve the runway, and then changing the status of the aircraft accordingly.
+                            Aircraft.SetStatus(AircraftStatus.OnGround);
+                            //Then we decrease the tick availability of the eunway and set the aircraft state to Onground
+                        }
+                    }
+                } else if(Runway.GetStatus() == RunwayStatus.Ocupated) {
+                    Runway.DecreaseTicksAvailability();
+                }
             }
-        }
     }
-
-    ShowStatus();
-}
 
     
 
@@ -97,22 +107,26 @@ namespace PracticalWorkI
     {
         Console.WriteLine("Please specify the path of the file: ");
         string filePath = Console.ReadLine();
+        // We ak for the file of the path
 
         while (!File.Exists(filePath))
         {
             Console.WriteLine("The file provided does not exist, please provide another one:");
             filePath = Console.ReadLine();
         }
+        // We check weather the file exists using the File.Exists function and if it doesnt, we ask for another path
 
         string separator = ",";
 
         StreamReader sl = File.OpenText(filePath);
         
         string line;
+        // We create a StremReader variable called s1 with which we will read the file and stablish the separator as a comma
         
         while((line = sl.ReadLine()) != null)
         {
             string[] values = line.Split(separator);
+            // We create an array to almacenate the values separated by the comma with the Split function
 
             if(values.Length == 8)
             {
@@ -146,7 +160,7 @@ namespace PracticalWorkI
                     Aircrafts.Add(newAircraft);
                     Console.WriteLine($"Private Aircraft {newAircraft.GetID()} was added\n");
                 }
-
+                // Depending on the type of aircraft, we create a new one of that specific type.
             }
         }
         sl.Close();
@@ -163,9 +177,11 @@ namespace PracticalWorkI
         Console.WriteLine("1. Commercial Aircraft");
         Console.WriteLine("2. Cargo Aircraft");
         Console.WriteLine("3. Private Aircraft");
+        // Ask what type of Aircraft we wish
 
         string choice = Console.ReadLine();
         Aircraft newAircraft;
+        //We create a new Aircraft
 
         Console.Write("Enter Aircraft ID: ");
         string id = Console.ReadLine();
@@ -181,9 +197,11 @@ namespace PracticalWorkI
 
         Console.Write("Enter Fuel Consume (liters/km): ");
         double fuelConsume = double.Parse(Console.ReadLine());
+        // We ask for the value of every attribute of the aircraft
 
         double actualFuel = fuelCapacity;
         AircraftStatus status = (distance > 0) ? AircraftStatus.InFlight : AircraftStatus.Waiting;
+        //For the state, we evaluate if the distance is greater than 0 with a ternary if
 
         switch (choice)
         {
@@ -211,6 +229,7 @@ namespace PracticalWorkI
             default:
                 Console.WriteLine("Invalid choice, select one of the options.");
                 return;
+            // For each type of Aircraft we create a new one of the specific type using a switch case with the selected option
         }
 
     }
@@ -224,6 +243,7 @@ namespace PracticalWorkI
                 this.AdvanceTick();
                 Thread.Sleep(3000);
             }
+            // It calls the AdvanceTick function for the desired number of ticks, in this case 150. It also clears the Console and waits 3 seconds before each tick, just for clarity.
     }
     }
 }
