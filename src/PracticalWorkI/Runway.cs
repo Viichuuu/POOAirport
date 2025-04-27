@@ -22,7 +22,7 @@ namespace PracticalWorkI
         public Aircraft GetCurrentAircraft() => currentAircraft;
         public int GetTicksAvailability() => ticksAvailability;
 
-        public void ReserveRunmway(Aircraft aircraft)
+        public void ReserveRunway(Aircraft aircraft)
         {
             this.currentAircraft = aircraft;
             this.status = RunwayStatus.Ocupated;
