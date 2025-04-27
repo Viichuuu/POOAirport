@@ -7,9 +7,10 @@ namespace PracticalWorkI
         public static void Main()
         {
             bool exit = false;
+            string option = "";
 
-            Airport AirUFV = new Airport(2,2)
-
+            Airport AirUFV = new Airport(2,2);
+            
             while(!exit)
             {
                 Console.WriteLine("___________________________________________________");
@@ -21,24 +22,28 @@ namespace PracticalWorkI
                 Console.WriteLine("|4. Exit                                          |");
                 Console.WriteLine("|_________________________________________________|");
 
-                string option = IntConsole.ReadLine();
+                 option = Console.ReadLine();
 
-                switch(option)
-                {
+               switch(option)
+               {
                     case "1":
-                        AirUFV.LoadAircraftFromFile();
-                        break;
-
+                       AirUFV.LoadAircraftFromFile();
+                       break;  
                     case "2":
-                        AirUFV.AddAircraft();
-                        break;
+                       AirUFV.AddAircraft();
+                       break;
                     case "3":
-                        AirUFV.ShowStatus();
-                        AirUFV.AdvanceTick();
+                       AirUFV.RunSIM();
+                       break;
                     case "4":
-                        exit = true;
-                }
+                       exit = true;
+                       break;
+                    default:
+                        Console.WriteLine("Please select one of the options");
+                        break;
+               }
             }
         }
     }
 }
+

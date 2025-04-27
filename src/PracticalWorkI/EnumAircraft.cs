@@ -4,9 +4,9 @@ namespace PracticalWorkI
 {
     public enum AircraftStatus
     {
-        Flight,
+        InFlight,
         Waiting, 
         Landing,
-        Ground
+        OnGround
     }
 }

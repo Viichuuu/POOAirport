@@ -1,19 +1,20 @@
+using Microsoft.VisualBasic;
 using PracticalWorkI;
 using System;
 using System.IO;
 
 
-namespace PracticalWork1
+namespace PracticalWorkI
 {
-    public abstract class Airport
+    public class Airport
     {
-        private Runway[][] Runways {get; set;}
+        private Runway[,] Runways {get; set;}
 
         private List<Aircraft> Aircrafts {get; set;}
 
         public Airport(int runwayRows, int runwayColumns)
         {
-            Runways = new Runways[runwayRows, runwayColumns];
+            Runways = new Runway[runwayRows, runwayColumns];
             Aircrafts = new List<Aircraft>();
 
             int id = 1;
@@ -28,26 +29,34 @@ namespace PracticalWork1
 
     public void ShowStatus()
     {
-        Console.WriteLine("Runway Status:");
+        Console.WriteLine("Runway Status: \n");
         for(int r = 0; r < Runways.GetLength(0); r++)
         {
             for(int c = 0; c < Runways.GetLength(1); c++)
             {
-                Runways[r][c].ToString()
+                Runway runway = Runways[r,c];
+                    if (runway.GetStatus() == RunwayStatus.Free)
+                    {
+                        Console.WriteLine($"{Runways[r,c].GetID()} is free\n");
+                    } else {
+                        Console.WriteLine($"{Runways[r,c].GetID()} is occupied by {Runways[r,c].GetCurrentAircraft()}\n");
+                    }
             }
         } 
-        Console.WriteLine("Airctaft Status:");
-        foreach (var Airctaft in Aircrafts)
+
+        Console.WriteLine("Airctaft Status: \n");
+        foreach (var aircraft in Aircrafts)
         {
-            Console.WriteLine($"{Aircraft.ToString()}");
+            Console.WriteLine($"{aircraft.ToString()}");
         }
     }
 
-    public void AdvanceTick()
-    {
-        int currentTick = 1;
-
-        while(currentTick < 150)
+    
+    public void AdvanceTick(int currentTick)
+    {        
+        
+        int tempTick = currentTick;
+        while(currentTick  == tempTick)
         {
             currentTick++;
             int simulationTime = currentTick * 15;
@@ -55,44 +64,66 @@ namespace PracticalWork1
             foreach(var Aircraft in Aircrafts)
             {
                 
-                if(Aircraft.GetStatus(AircraftStatus.Flight))
+                if(Aircraft.GetStatus() == AircraftStatus.InFlight)
                 {
-                    Aircraft.SetDistance((simulationTime/4) / Aircraft.GetSpeed());
-                    Aircraft.SetActualFuel(Aircraft.fuelCapacity - (Aircraft.fuelConsume / Aircraft.GetDistance()));
-                    if(Aircraft.GetDistance == 0)
+                    int tickInHours = simulationTime / 60;
+                    int tickDistance = Aircraft.GetSpeed() * tickInHours;
+                    int currentDistance = Aircraft.GetDistance();
+                    int finalDistance = currentDistance - tickDistance;
+                    Aircraft.SetDistance(finalDistance);
+                    Aircraft.SetActualFuel(Aircraft.GetFuelCapacity() - Aircraft.GetFuelConsume() * Aircraft.GetSpeed() / tickInHours);
+
+                    if(Aircraft.GetDistance() == 0)
                     {
                         Aircraft.SetStatus(AircraftStatus.Waiting);
                     }
-                } else if(Aircraft.GetStatus(AircraftStatus.Waiting)){
+
+                    } else if(Aircraft.GetStatus() == AircraftStatus.Waiting || Aircraft.GetStatus() == AircraftStatus.Landing){
+                    int tickInHours = simulationTime / 60;
+                    Aircraft.SetActualFuel(Aircraft.GetFuelCapacity() - Aircraft.GetFuelConsume() * Aircraft.GetSpeed() / tickInHours);
+                    } else if(Aircraft.GetStatus() == AircraftStatus.OnGround){
+                    }
                     
-                }
             } 
         
             foreach(var Runway in Runways)
             {
-                if(Runway.GetStatus(RunwayStatus.Occupied) && Runway.GetTickAvailability() > 0){
-                    Runway.DecreaseTickAvailability();
-                } else if(Runway.GetTickAvailability() == 0){
-                    Runway.SetStatus(RunwayStatus.Free);
+                if(Runway.GetStatus() == RunwayStatus.Free)
+                {
+                    foreach(var Aircraft in Aircrafts)
+                    {
+                        if(Aircraft.GetStatus() == AircraftStatus.Waiting)
+                        {
+                            Runway.ReserveRunmway(Aircraft);
+                            Aircraft.SetStatus(AircraftStatus.Landing);
+                            break;
+                        }
+                    }
+                } else if(Runway.GetStatus() == RunwayStatus.Ocupated) {
+                    Runway.DecreaseTicksAvailability();
                 }
             }
         }
-    }
 
-    public void LoadAircraftFromFile(string filePath)
+    }
+    
+
+    public void LoadAircraftFromFile()
     {
-        if (File.Exists(filePath) == false)
+        Console.WriteLine("Please specify the path of the file: ");
+        string filePath = Console.ReadLine();
+
+        while (!File.Exists(filePath))
         {
-            Console.WriteLine("The file provided does not exist, please provide another one.");
-            return;
+            Console.WriteLine("The file provided does not exist, please provide another one:");
+            filePath = Console.ReadLine();
         }
 
         string separator = ",";
 
         StreamReader sl = File.OpenText(filePath);
         
-        string line = sl.ReadLine();
-
+        string line;
         
         while((line = sl.ReadLine()) != null)
         {
@@ -100,37 +131,41 @@ namespace PracticalWork1
 
             if(values.Length == 8)
             {
-                for(int i = 0; i < values.Length; i++)
+                
+                // We go through each line of the file and set the parameters for each aircraft
+                string id = values[0];
+                AircraftStatus status = Enum.Parse<AircraftStatus>(values[1]);
+                int distance = int.Parse(values[2]);
+                int speed = int.Parse(values[3]);
+                string type = values[4];
+                double fuelCapacity = double.Parse(values[5]);
+                double fuelConsume = double.Parse(values[6]);
+                string extraData = values[7];
+                double actualFuel = fuelCapacity;
+
+                Aircraft newAircraft;
+                if(type == "Commercial" || type == "commercial")
                 {
-                    // We go through each line of the file and set the parameters for each aircraft
-                    // We use Trim to eliminate the spaces at the start or end of the line
-                    string id = values[0].Trim();
-                    AircraftStatus status = Enum.Parse<AircraftStatus>(values[1].Trim());
-                    int distance = int.Parse(values[2].Trim());
-                    int speed = int.Parse(values[3].Trim());
-                    string type = values[4].Trim();
-                    double fuelCapacity = double.Parse(values[5].Trim());
-                    double fuelConsume = double.Parse(values[6].Trim());
-                    string extraData = values[7].Trim();
-                    double actualFuel = fuelCapacity;
-
-                    Aircraft newAircraft;
-                    if(type == "Commercial" || type == "commercial")
-                    {
-                        int passengers = int.Parse(values[8].Trim());
-                        newAircraft = new CommercialAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, passengers);
-                    } else if(type == "Cargo" || type == "cargo"){
-                        double maxLoad = double.Parse(values[8].Trim());
-                        newAircraft = new CargoAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, maxLoad);
-                    } else if(type == "Private" || type == "private"){
-                        string owner = values[8].Trim();
-                        newAircraft = new PrivateAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, owner);
-                    }
+                    int passengers = int.Parse(values[7]);
+                    newAircraft = new CommercialAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, passengers);
+                    Aircrafts.Add(newAircraft);
+                    Console.WriteLine($"Commercial Aircraft {newAircraft.GetID()} was added\n");
+                } else if(type == "Cargo" || type == "cargo"){
+                    double maxLoad = double.Parse(values[7]);
+                    newAircraft = new CargoAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, maxLoad);
+                    Aircrafts.Add(newAircraft);
+                    Console.WriteLine($"Cargo Aircraft {newAircraft.GetID()} was added\n");
+                } else if(type == "Private" || type == "private"){
+                    string owner = values[7];
+                    newAircraft = new PrivateAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, owner);
+                    Aircrafts.Add(newAircraft);
+                    Console.WriteLine($"Private Aircraft {newAircraft.GetID()} was added\n");
                 }
-            }
 
+            }
         }
         sl.Close();
+        return;
     }
         
 
@@ -171,25 +206,39 @@ namespace PracticalWork1
                 Console.Write("Enter Number of Passengers: ");
                 int passengers = int.Parse(Console.ReadLine());
                 newAircraft = new CommercialAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, passengers);
-                break;
+                Aircrafts.Add(newAircraft);
+                Console.WriteLine($"Aircraft {newAircraft.GetID()} was added");
+                return;
             case "2":
                 Console.Write("Enter Maximum Load (kg): ");
                 double maxLoad = double.Parse(Console.ReadLine());
                 newAircraft = new CargoAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, maxLoad);
-                break;
+                Aircrafts.Add(newAircraft);
+                Console.WriteLine($"Aircraft {newAircraft.GetID()} was added");
+                return;
             case "3":
                 Console.Write("Enter Owner's Name: ");
                 string owner = Console.ReadLine();
                 newAircraft = new PrivateAircraft(id, status, distance, speed, fuelCapacity, fuelConsume, actualFuel, owner);
-                break;
+                Aircrafts.Add(newAircraft);
+                Console.WriteLine($"Aircraft {newAircraft.GetID()} was added");
+                return;
             default:
                 Console.WriteLine("Invalid choice, select one of the options.");
                 return;
         }
 
-        Aircrafts.Add(newAircraft);
-        Console.WriteLine($"Aircraft {newAircraft.GetID()} was added\n");
     }
 
+
+    public void RunSIM()
+    {
+            for(int i = 0; i < 150; i++)
+            {
+                this.ShowStatus();
+                this.AdvanceTick(i);
+                Thread.Sleep(3000);
+            }
+    }
     }
 }
