@@ -11,4 +11,4 @@ Iñaki Quireza Iriberri
 Javier López Ranero
 
 1. Introduction
-  This document describes and presents our design of the 
+  This document describes and presents our design of the implementation of an airport 
