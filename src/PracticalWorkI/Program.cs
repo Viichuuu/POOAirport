@@ -2,11 +2,13 @@
 
 namespace PracticalWorkI
 {
-    class Program : Airport
+    public class Program
     {
-        static void Main()
+        public static void Main()
         {
             bool exit = false;
+
+            Airport AirUFV = new Airport(2,2)
 
             while(!exit)
             {
@@ -24,14 +26,15 @@ namespace PracticalWorkI
                 switch(option)
                 {
                     case "1":
-                        Airport.LoadAircraftFromFile();
+                        AirUFV.LoadAircraftFromFile();
                         break;
 
                     case "2":
-                        Airport.AddAircraft();
+                        AirUFV.AddAircraft();
                         break;
                     case "3":
-                        Airport.AdvanceTick();
+                        AirUFV.ShowStatus();
+                        AirUFV.AdvanceTick();
                     case "4":
                         exit = true;
                 }
