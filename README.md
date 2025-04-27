@@ -61,3 +61,22 @@ Javier López Ranero
   AircraftStatus: Possible states of the Aircraft (Flight, landing, ground and waiting)
 
   RunwayStatus: Possible states of the aircraft (Free, occupied)
+
+ ### Class Diagram
+
+
+ ## 3. Problems encountered
+
+ During the development of this project we faced a lot of problems
+
+ - Our group was made 10 days before the deadline and we didnt know each other
+ - One of the mates didnt do anything beacause of family problems
+ - There was lack of communication
+ - Using github by some mates was difficult at first
+ - No one did their assignments on time. They said they would have some class done by some exact time and they didnt have them
+ - We didnt have the opportunity to be sure about our job because of this previous things I mentioned
+ - The organisation has been a disaster
+
+   Despite this problems we were able to make a good repository, complete the code with the requirments (and to make it compile) and send the project on time
+
+    
