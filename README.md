@@ -28,7 +28,7 @@ Javier López Ranero
 
   This project is a simulator of an airport with different airplanes landing on it
 
-  This simulation works with ticks, each tick is 15min. Each ariplane moves closer to the airport every tick and use fuel depending on variables as speed or fuel consumption
+  This simulation works with ticks, each tick is 15min. Each airplane moves closer to the airport every tick and use fuel depending on variables as speed or fuel consumption
 
   The planes land at the airport when a runway is free, when landing the runway is occupied and no other airplane can use it. When the plane lands the runway becomes free again
 
@@ -78,7 +78,7 @@ Javier López Ranero
  - We didnt have the opportunity to be sure about our job because of this previous things I mentioned
  - The organisation has been a disaster
 
-   Despite this problems we were able to make a good repository, complete the code with the requirments (and to make it compile) and send the project on time
+   Despite this problems we were able to make a good repository, complete the code with the requirements (and to make it compile) and send the project on time
 
  ## 4. Conclusions
 
