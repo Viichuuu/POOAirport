@@ -87,7 +87,7 @@ namespace PracticalWorkI
                     {
                         if(Aircraft.GetStatus() == AircraftStatus.Waiting)
                         {
-                            Runway.ReserveRunmway(Aircraft);
+                            Runway.ReserveRunway(Aircraft);
                             Aircraft.SetStatus(AircraftStatus.Landing);
                             Runway.DecreaseTicksAvailability();
                             // If the Runway status is free, then we go through each aircraft as before, searching for one that is waiting, reserve the runway, and then changing the status of the aircraft accordingly.
