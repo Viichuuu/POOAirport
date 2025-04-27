@@ -79,4 +79,18 @@ Javier López Ranero
 
    Despite this problems we were able to make a good repository, complete the code with the requirments (and to make it compile) and send the project on time
 
-    
+ ## 4. Conclusions
+
+With this project we learned how to use what we leraned in object-oriented programming to build a simulation with classes and using inheritance.
+
+We worked in GitHub, it helped us understand teamwork and how to organize code.
+
+The organization was not easy, and sometimes we had problems communicating.  
+Finishing things on time was a big issue too.
+This taught us why it is important to plan and coordinate in a group.
+
+We also improved our skills writing code.
+
+In the end, we finished an airport simulator that follows the main requirements of the assignment.  
+With more time or better organisation, we could have improved some things, but with the situation we had, we are satisfied with the result.
+
