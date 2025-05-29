@@ -1,7 +1,7 @@
-A553,InFlight,400,Cargo,5000,20,40000
-C546,InFlight,200,Private,7000,12,Pedro
-B345,InFlight,1000,Private,5830,32,Luis
-A653,InFlight,720,Commercial,4000,10,150
-B980,OnGround,0,Private,7000,12,Javier
-C877,Waiting,0,Cargo,6000,23,50000
-A567,InFlight,300,Commercial,4500,14,180
+A553,InFlight,400,550,Cargo,5000,20,40000
+C546,InFlight,200,480,Private,7000,12,Pedro
+B345,InFlight,1000,400,Private,5830,32,Luis
+A653,InFlight,720,700,Commercial,4000,10,150
+B980,OnGround,0,460,Private,7000,12,Javier
+C877,Waiting,0,500,Cargo,6000,23,50000
+A567,InFlight,300,580,Commercial,4500,14,180
